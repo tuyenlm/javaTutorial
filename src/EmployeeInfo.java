@@ -20,6 +20,7 @@ public class EmployeeInfo extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
+	private JComboBox<String> comboBox;
 
 	/**
 	 * Launch the application.
@@ -63,6 +64,19 @@ public class EmployeeInfo extends JFrame {
 		}
 	}
 
+	public void fillComboBox(){
+		try {
+			String query = "select * from employeeInfo";
+			PreparedStatement pst = connection.prepareStatement(query);
+			ResultSet rs = pst.executeQuery();
+			while (rs.next()) {
+				comboBox.addItem(rs.getString("name"));
+				
+			}
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
+	}
 	/**
 	 * Create the frame.
 	 */
@@ -187,7 +201,7 @@ public class EmployeeInfo extends JFrame {
 					PreparedStatement pst = connection.prepareStatement(query);
 					pst.execute();
 					JOptionPane.showConfirmDialog(null, "Data Saved.");
-					
+
 					pst.close();
 				} catch (Exception e2) {
 					e2.printStackTrace();
@@ -197,7 +211,16 @@ public class EmployeeInfo extends JFrame {
 		});
 		btnDelete.setBounds(74, 208, 91, 21);
 		contentPane.add(btnDelete);
-		
+
+		comboBox = new JComboBox();
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		comboBox.setBounds(12, 257, 101, 19);
+		contentPane.add(comboBox);
+
 		refreshTable();
+		fillComboBox();
 	}
 }
