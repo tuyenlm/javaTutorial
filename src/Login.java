@@ -1,4 +1,5 @@
 import java.awt.EventQueue;
+import java.awt.Image;
 import java.sql.*;
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -27,6 +28,7 @@ public class Login {
 	Connection connection = null;
 	private JTextField txtUsername;
 	private JPasswordField pwdPassrord;
+	private JLabel lbImage;
 
 	/**
 	 * Create the application.
@@ -60,6 +62,8 @@ public class Login {
 		txtUsername.setColumns(10);
 
 		JButton btnLogin = new JButton("Login");
+		Image img2 = new ImageIcon(this.getClass().getResource("/Ok-icon.png")).getImage();
+		btnLogin.setIcon(new ImageIcon(img2));
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -72,11 +76,18 @@ public class Login {
 					while (rs.next()) {
 						count += 1;
 					}
-					if(count == 1){
+					if (count == 1) {
 						JOptionPane.showConfirmDialog(null, "Username and Password is correct");
-					}else if(count > 1){
+						frame.dispose();
+						EmployeeInfo emplInfo = new EmployeeInfo();
+						emplInfo.setVisible(true);
+						
+					} else if (count > 1) {
 						JOptionPane.showConfirmDialog(null, "Duplicate Username and Password");
-					}else JOptionPane.showConfirmDialog(null, "Username and Password is not correct. Try again");
+					} else
+						JOptionPane.showConfirmDialog(null, "Username and Password is not correct. Try again");
+					rs.close();
+					pst.close();
 				} catch (Exception e2) {
 					JOptionPane.showConfirmDialog(null, e2);
 				}
@@ -88,5 +99,11 @@ public class Login {
 		pwdPassrord = new JPasswordField();
 		pwdPassrord.setBounds(125, 67, 96, 19);
 		frame.getContentPane().add(pwdPassrord);
+
+		lbImage = new JLabel("");
+		Image img = new ImageIcon(this.getClass().getResource("/login-icon.png")).getImage();
+		lbImage.setIcon(new ImageIcon(img));
+		lbImage.setBounds(257, 10, 129, 161);
+		frame.getContentPane().add(lbImage);
 	}
 }
